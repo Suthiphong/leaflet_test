@@ -5,11 +5,8 @@
 <head>
 
     <title>Leaflet Web Map</title>
-
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin="" />
-
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
-
     <style>
         #map {
             width: 100vw;
@@ -28,29 +25,77 @@
         var maps = [
                 [13.411034280287701, 101.04643912457125],
                 [13.425287621625005, 100.99944444412604],
-                [13.384770837860163, 101.0203330871364]
+                [13.384770837860163, 101.0203330871364],
+                [13.346281407713256, 101.02933893107827]
             ]
             //let time = new Date()
         var time = new Date()
+        var arrList = []
         var map = L.map('map', {
             center: [13.384770837860163, 101.0203330871364],
-            zoom: 15,
+            zoom: 13,
             fadeAnimation: false,
             closePopupOnClick: false,
         });
+
+        var valv = L.Icon.extend({
+            options: {
+                shadowUrl: '113.png',
+                iconSize:     [38, 95],
+                shadowSize:   [50, 64],
+                iconAnchor:   [22, 94],
+                shadowAnchor: [4, 62],
+                popupAnchor:  [-3, -76]
+            }
+        });
+
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
+
+        var greenIcon = new valv({iconUrl: '113.png'})
+        L.icon = function (options) {
+            return new L.Icon(options);
+        };
+
+        var polygon = L.polygon([
+                [13.425287621625005, 100.99944444412604],
+                [13.384770837860163, 101.0203330871364]
+        ]).addTo(map)
+
+        var polygon2 = L.polygon([
+                [13.384770837860163, 101.0203330871364],
+                [13.411034280287701, 101.04643912457125]
+        ]).addTo(map)
+
+        var polygon3 = L.polygon([
+        [13.411034280287701, 101.04643912457125],
+                [13.346281407713256, 101.02933893107827]
+        ]).addTo(map)
+
+        L.marker([13.346281407713256, 101.02933893107827], {icon: '113.png'})
+
+
+
         maps.map((item) => {
-            let x = new L.Popup().setLatLng(new L.LatLng(item[0], item[1])).setContent("HELLO")
+            let x = new L.Popup().setLatLng(new L.LatLng(item[0], item[1])).setContent("<h2>HELLO</h2>")
+            arrList.push(x)
             map.addLayer(x)
-
-
         })
+
+        setInterval(()=> {
+            arrList.map((items)=> {
+                let newCurrent = new Date()
+                items.setContent(`<h3>${newCurrent.toString()}</h3>`)
+
+            })
+        },1000)
+
+
+
+
     </script>
-
 </body>
-
 </html>
